@@ -1,18 +1,21 @@
-document.getElementById('upload').addEventListener('change', async (event) => {
-  const file = event.target.files[0];
+document.getElementById("uploadForm").addEventListener("submit", async function (e) {
+  e.preventDefault();
+  const fileInput = document.getElementById("fileInput");
   const formData = new FormData();
-  formData.append('file', file);
+  formData.append("file", fileInput.files[0]);
+
+  const preview = document.getElementById("responsePreview");
+  preview.innerText = "Uploading…";
 
   try {
-    const response = await fetch('/api/parse-data', {
-      method: 'POST',
+    const res = await fetch("https://less-visualization-reports.onrender.com/upload", {
+      method: "POST",
       body: formData
     });
 
-    const result = await response.json();
-    console.log('Parsed data:', result);
-    // TODO: trigger visualization update
+    const data = await res.json();
+    preview.innerText = JSON.stringify(data, null, 2);
   } catch (err) {
-    console.error('Upload failed:', err);
+    preview.innerText = "❌ Upload failed: " + err.message;
   }
 });
