@@ -1,3 +1,4 @@
+// frontend/js/upload.js
 async function uploadReport() {
   const input = document.getElementById("report-upload");
   const file = input.files[0];
