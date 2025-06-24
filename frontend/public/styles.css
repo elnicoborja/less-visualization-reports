@@ -1,0 +1,9 @@
+/* frontend/public/styles.css */
+body {
+  font-family: sans-serif;
+  padding: 2rem;
+}
+header h1 {
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+}
