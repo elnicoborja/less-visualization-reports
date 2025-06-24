@@ -1,31 +1,23 @@
 async function uploadReport() {
-  const fileInput = document.getElementById('report-upload');
-  const file = fileInput.files[0];
-  if (!file) {
-    alert("Please select a file first.");
-    return;
-  }
-
+  const input = document.getElementById("report-upload");
+  const file = input.files[0];
   const formData = new FormData();
   formData.append("file", file);
 
   try {
     const response = await fetch("https://less-visualization-reports.onrender.com/upload/", {
       method: "POST",
-      body: formData
+      body: formData,
     });
 
-    const result = await response.json();
-    console.log("Server response:", result);
+    const data = await response.json();
+    alert("Upload successful!");
 
-    if (result.status === "success") {
-      alert("Upload successful!");
-      // TODO: visualize or redirect
-    } else {
-      alert("Upload failed.");
-    }
-  } catch (err) {
-    console.error("Upload error:", err);
-    alert("An error occurred during upload.");
+    const previewDiv = document.getElementById("preview");
+    previewDiv.innerHTML = "<pre>" + JSON.stringify(data, null, 2) + "</pre>";
+    document.getElementById("dashboard").style.display = "block";
+  } catch (error) {
+    alert("Upload failed.");
+    console.error(error);
   }
 }
