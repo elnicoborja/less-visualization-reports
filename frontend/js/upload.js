@@ -1,21 +1,27 @@
-document.getElementById("uploadForm").addEventListener("submit", async function (e) {
-  e.preventDefault();
-  const fileInput = document.getElementById("fileInput");
-  const formData = new FormData();
-  formData.append("file", fileInput.files[0]);
+function uploadReport() {
+  const input = document.getElementById('report-upload');
+  const file = input.files[0];
 
-  const preview = document.getElementById("responsePreview");
-  preview.innerText = "Uploading…";
-
-  try {
-    const res = await fetch("https://less-visualization-reports.onrender.com/upload", {
-      method: "POST",
-      body: formData
-    });
-
-    const data = await res.json();
-    preview.innerText = JSON.stringify(data, null, 2);
-  } catch (err) {
-    preview.innerText = "❌ Upload failed: " + err.message;
+  if (!file) {
+    alert('Please select a file first.');
+    return;
   }
-});
+
+  const formData = new FormData();
+  formData.append('file', file);
+
+  fetch('https://less-visualization-reports.onrender.com/upload', {
+    method: 'POST',
+    body: formData
+  })
+  .then(response => response.json())
+  .then(data => {
+    console.log('Upload success:', data);
+    document.getElementById('dashboard').style.display = 'block';
+    // Later: Render D3 visualizations here using `data`
+  })
+  .catch(err => {
+    console.error('Upload failed:', err);
+    alert('Upload failed. Please try again.');
+  });
+}
