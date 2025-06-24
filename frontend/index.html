@@ -1,4 +1,4 @@
-<!-- frontend/index.html -->
+<!-- index.html in /frontend -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -22,9 +22,12 @@
     <section id="dashboard" style="display:none;">
       <h2>Report Preview</h2>
       <div id="preview"></div>
+      <h3>Top Metrics (Sample)</h3>
+      <svg id="bar-chart" width="600" height="300"></svg>
     </section>
   </main>
 
+  <script src="https://d3js.org/d3.v7.min.js"></script>
   <script src="./js/upload.js"></script>
 </body>
 </html>
