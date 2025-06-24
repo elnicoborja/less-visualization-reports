@@ -2,16 +2,29 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Less Visualization Reports</title>
+  <link rel="stylesheet" href="./public/styles.css" />
 </head>
 <body>
-  <h1>📊 Upload a Report</h1>
-  <form id="uploadForm">
-    <input type="file" name="file" id="fileInput" accept=".csv,.xlsx,.json"/>
-    <button type="submit">Upload</button>
-  </form>
-  <div id="responsePreview" style="margin-top: 2rem;"></div>
+  <header>
+    <h1>📊 Less Visualization Reports</h1>
+    <p>Upload your digital media report to get started</p>
+  </header>
+
+  <main>
+    <section id="upload-section">
+      <input type="file" id="report-upload" accept=".csv, .xlsx, .xls, .json" />
+      <button onclick="uploadReport()">Upload</button>
+    </section>
+
+    <section id="dashboard" style="display:none;">
+      <h2>Report Preview</h2>
+      <div id="visualizations">
+        <!-- D3 charts will go here -->
+      </div>
+    </section>
+  </main>
 
   <script src="./js/upload.js"></script>
 </body>
