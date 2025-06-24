@@ -1,14 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Less Visualization Reports</title>
 </head>
 <body>
-  <h1>Upload a Paid Media Report</h1>
-  <input type="file" id="upload" />
-  <pre id="response"></pre>
+  <h1>📊 Upload a Report</h1>
+  <form id="uploadForm">
+    <input type="file" name="file" id="fileInput" accept=".csv,.xlsx,.json"/>
+    <button type="submit">Upload</button>
+  </form>
+  <div id="responsePreview" style="margin-top: 2rem;"></div>
 
-  <script src="js/upload.js"></script>
+  <script src="./js/upload.js"></script>
 </body>
 </html>
