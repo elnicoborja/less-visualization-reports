@@ -1,4 +1,7 @@
 {
+  "root": "frontend"
+}
+{
   "rewrites": [
     {
       "source": "/api/(.*)",
