@@ -1,4 +1,4 @@
-# backend/main.py
+# main.py
 from fastapi import FastAPI, UploadFile, File
 from fastapi.middleware.cors import CORSMiddleware
 import pandas as pd
@@ -19,17 +19,15 @@ def read_root():
 
 @app.post("/upload/")
 async def upload_file(file: UploadFile = File(...)):
-    try:
-        df = pd.read_csv(file.file)
-        preview = df.head().to_dict(orient="records")
-        columns = df.columns.tolist()
-        return {
-            "status": "success",
-            "filename": file.filename,
-            "size_bytes": await file.read().__sizeof__(),  # or len(await file.read())
-            "columns": columns,
-            "preview": preview,
-            "rows": len(df)
-        }
-    except Exception as e:
-        return {"status": "error", "message": str(e)}
+    df = pd.read_csv(file.file)
+    preview = df.head().to_dict(orient="records")
+    columns = df.columns.tolist()
+    return {
+        "columns": columns,
+        "preview": preview,
+        "rows": len(df)
+    }
+
+if __name__ == "__main__":
+    import uvicorn
+    uvicorn.run("backend.main:app", host="0.0.0.0", port=8000)
