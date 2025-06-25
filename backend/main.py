@@ -23,9 +23,13 @@ async def upload_file(file: UploadFile = File(...)):
         df = pd.read_csv(file.file)
         preview = df.head().to_dict(orient="records")
         columns = df.columns.tolist()
-        return {"columns": columns, "preview": preview, "rows": len(df)}
+        return {
+            "status": "success",
+            "filename": file.filename,
+            "size_bytes": await file.read().__sizeof__(),  # or len(await file.read())
+            "columns": columns,
+            "preview": preview,
+            "rows": len(df)
+        }
     except Exception as e:
-        return JSONResponse(
-            status_code=400,
-            content={"error": str(e)}
-        )
+        return {"status": "error", "message": str(e)}
