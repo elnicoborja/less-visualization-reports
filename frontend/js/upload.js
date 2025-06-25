@@ -1,4 +1,3 @@
-// upload.js in /frontend/js
 async function uploadReport() {
   const input = document.getElementById("report-upload");
   const file = input.files[0];
@@ -12,6 +11,12 @@ async function uploadReport() {
     });
 
     const data = await response.json();
+
+    if (data.status !== "success") {
+      alert("Upload failed: " + data.message);
+      return;
+    }
+
     alert("Upload successful!");
 
     const previewDiv = document.getElementById("preview");
@@ -21,7 +26,7 @@ async function uploadReport() {
     drawBarChart(data.preview);
   } catch (error) {
     alert("Upload failed.");
-    console.error(error);
+    console.error("Upload error:", error);
   }
 }
 
@@ -30,11 +35,17 @@ function drawBarChart(data) {
   svg.selectAll("*").remove();
 
   const keys = Object.keys(data[0]);
-  const numericKey = keys.find(key => typeof data[0][key] === "number");
+  const numericKey = keys.find(key => !isNaN(parseFloat(data[0][key])) && isFinite(data[0][key]));
 
-  if (!numericKey) return;
+  if (!numericKey) {
+    svg.append("text").text("No numeric data to chart.");
+    return;
+  }
 
-  const chartData = data.map(d => ({ label: d[keys[0]], value: +d[numericKey] }));
+  const chartData = data.map(d => ({
+    label: d[keys[0]],
+    value: +d[numericKey]
+  }));
 
   const margin = { top: 20, right: 30, bottom: 40, left: 40 };
   const width = +svg.attr("width") - margin.left - margin.right;
@@ -42,8 +53,14 @@ function drawBarChart(data) {
 
   const g = svg.append("g").attr("transform", `translate(${margin.left},${margin.top})`);
 
-  const x = d3.scaleBand().domain(chartData.map(d => d.label)).range([0, width]).padding(0.2);
-  const y = d3.scaleLinear().domain([0, d3.max(chartData, d => d.value)]).range([height, 0]);
+  const x = d3.scaleBand()
+    .domain(chartData.map(d => d.label))
+    .range([0, width])
+    .padding(0.2);
+
+  const y = d3.scaleLinear()
+    .domain([0, d3.max(chartData, d => d.value)])
+    .range([height, 0]);
 
   g.append("g").call(d3.axisLeft(y));
   g.append("g")
