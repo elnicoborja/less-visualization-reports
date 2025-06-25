@@ -19,7 +19,13 @@ def read_root():
 
 @app.post("/upload/")
 async def upload_file(file: UploadFile = File(...)):
-    df = pd.read_csv(file.file)
-    preview = df.head().to_dict(orient="records")
-    columns = df.columns.tolist()
-    return {"columns": columns, "preview": preview, "rows": len(df)}
+    try:
+        df = pd.read_csv(file.file)
+        preview = df.head().to_dict(orient="records")
+        columns = df.columns.tolist()
+        return {"columns": columns, "preview": preview, "rows": len(df)}
+    except Exception as e:
+        return JSONResponse(
+            status_code=400,
+            content={"error": str(e)}
+        )
