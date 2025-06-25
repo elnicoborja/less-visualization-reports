@@ -33,7 +33,3 @@ async def upload_file(file: UploadFile = File(...)):
         }
     except Exception as e:
         return {"status": "error", "message": str(e)}
-
-if __name__ == "__main__":
-    import uvicorn
-    uvicorn.run("backend.main:app", host="0.0.0.0", port=8000)
